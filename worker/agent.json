@@ -1,0 +1,14 @@
+{
+  "label": "Image to JPEG Converter",
+  "description": "Converts TIFF, PNG, WebP, and other image formats to JPEG by adding the JPEG to the same entity",
+  "endpoint": "https://image-converter-klados.nick-chimicles-professional.workers.dev",
+  "actions_required": ["entity:view", "entity:update"],
+  "accepts": {
+    "types": ["*"],
+    "cardinality": "one"
+  },
+  "produces": {
+    "types": ["*"],
+    "cardinality": "one"
+  }
+}
