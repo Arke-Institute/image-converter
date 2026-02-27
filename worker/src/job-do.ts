@@ -26,7 +26,7 @@ import {
   type FlowStep,
   type Output,
 } from '@arke-institute/rhiza';
-import { processJob } from './job';
+import { processJob, type ProcessResult } from './job';
 import type { Env } from './types';
 
 /**
@@ -222,7 +222,7 @@ export class KladosJobDO extends DurableObject<Env> {
       }
 
       // Process the job (user's business logic)
-      const result = await processJob({
+      const result: ProcessResult = await processJob({
         request,
         client,
         logger,
@@ -289,7 +289,8 @@ export class KladosJobDO extends DurableObject<Env> {
 
       // Finalize log with outputs
       logger.success('Job completed');
-      const outputIds = (result.outputs || []).map(o => typeof o === 'string' ? o : o.id);
+      const outputs: Output[] = result.outputs || [];
+      const outputIds = outputs.map((o) => typeof o === 'string' ? o : o.entity_id);
       await updateLogStatus(client, logFileId, 'done', {
         messages: logger.getMessages(),
         outputs: outputIds,

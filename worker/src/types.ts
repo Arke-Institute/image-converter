@@ -6,14 +6,26 @@
  * Cloudflare Worker environment bindings
  */
 export interface Env {
-  /** Klados agent ID (registered in Arke) */
+  /** Default klados agent ID (fallback) */
   AGENT_ID: string;
 
   /** Agent version for logging */
   AGENT_VERSION: string;
 
-  /** Arke agent API key (secret) */
+  /** Default Arke agent API key (fallback, secret) */
   ARKE_AGENT_KEY: string;
+
+  /** Test network klados ID (optional, for dual-network deployment) */
+  AGENT_ID_TEST?: string;
+
+  /** Main network klados ID (optional, for dual-network deployment) */
+  AGENT_ID_MAIN?: string;
+
+  /** Test network agent API key (secret) */
+  ARKE_AGENT_KEY_TEST?: string;
+
+  /** Main network agent API key (secret) */
+  ARKE_AGENT_KEY_MAIN?: string;
 
   /** Lambda function URL */
   LAMBDA_URL: string;
@@ -29,6 +41,9 @@ export interface Env {
 
   /** Durable Object binding for job processing */
   KLADOS_JOB: DurableObjectNamespace;
+
+  /** Index signature for NetworkEnv compatibility */
+  [key: string]: unknown;
 }
 
 /**
