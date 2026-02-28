@@ -1,6 +1,17 @@
 {
+  "schema_version": "1.0",
+
   "label": "Image to JPEG Converter",
   "description": "Converts TIFF, PNG, WebP, and other image formats to JPEG by adding the JPEG to the same entity",
+
+  "match": {
+    "path": "properties.content",
+    "any": {
+      "path": "content_type",
+      "in": ["image/tiff", "image/png", "image/webp", "image/gif", "image/bmp"]
+    }
+  },
+
   "endpoint": "https://image-converter-klados.nick-chimicles-professional.workers.dev",
   "actions_required": ["entity:view", "entity:update"],
   "accepts": {
