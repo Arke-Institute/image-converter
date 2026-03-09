@@ -290,14 +290,22 @@ export class KladosJobDO extends DurableObject<Env> {
         }
       }
 
-      // Finalize log with outputs
+      // Finalize log with entity provenance linking
       const isTerminal = !!(request.rhiza && (!handoffAction || handoffAction === 'done'));
       logger.success('Job completed');
+
+      const inputEntityIds: string[] = [];
+      if (request.target_entity) inputEntityIds.push(request.target_entity);
+      if (request.target_entities?.length) inputEntityIds.push(...request.target_entities);
+
       const outputs: Output[] = result.outputs || [];
       const outputIds = outputs.map((o) => typeof o === 'string' ? o : o.entity_id);
+
       await updateLogStatus(client, logFileId, 'done', {
         messages: logger.getMessages(),
-        outputs: outputIds,
+        outputs: outputIds.length > 0 ? outputIds : undefined,
+        inputEntityIds: inputEntityIds.length > 0 ? inputEntityIds : undefined,
+        linkEntitiesToLogs: true,
         jobCollectionId: request.job_collection,
         isTerminal,
       });
